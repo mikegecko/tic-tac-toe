@@ -5,6 +5,9 @@
 header{
     padding: 2rem;
 }
+.controls>button{
+    width: 5rem;
+}
 .container{
     display: flex;
     align-items: center;
