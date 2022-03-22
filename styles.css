@@ -1,14 +1,18 @@
-*{
+* {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 18px;
+    box-sizing: border-box;
 }
-header{
+
+header {
     padding: 2rem;
 }
-.controls>button{
+
+.controls>button {
     width: 5rem;
 }
-.container{
+
+.container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,22 +20,27 @@ header{
     width: 100vw;
     flex-direction: column;
 }
-.game-container{
+
+.game-container {
     margin: 2rem;
     background-color: rgb(92, 92, 92);
 }
-.gameboard{
+
+.gameboard {
     display: grid;
-    grid-template-columns: repeat(3,5rem);
-    grid-template-rows: repeat(3,5rem);
+    grid-template-columns: repeat(3, 5rem);
+    grid-template-rows: repeat(3, 5rem);
     grid-gap: 4px;
-    
-    
+
+
 }
-.gameboard>button{
+
+.tile {
     font-weight: bold;
     font-size: 54px;
 }
-footer{
+
+footer {
     text-align: center;
 }
+

@@ -3,12 +3,22 @@
 //Player objects should be a factory
 //Displaycontroller object should be an IIFE
 //
+const restartBtn = document.getElementById('restart');
+const tiles = document.querySelectorAll('.tile');
+tiles.forEach(element => {
+    element.addEventListener('click', fill);
+});
+
+function fill(element) {
+    element.target.innerHTML = 'X';
+}
+
 
 const Gameboard = (() => {
     let data = [];
     let round = 0;
     //Maybe this should just be the button ID instead of row/column
-    const play = (row,column,playerMarker) => {
+    const play = (row, column, playerMarker) => {
         round++;
     };
     const clear = () => {
@@ -17,9 +27,13 @@ const Gameboard = (() => {
     }
     const log = () => {
         console.table(data);
-        console.log('Round:'+round);
+        console.log('Round:' + round);
     }
-    return{play, clear, log}
+    return {
+        play,
+        clear,
+        log
+    }
 })();
 
 const Player = () => {
