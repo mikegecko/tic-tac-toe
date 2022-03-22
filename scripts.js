@@ -2,14 +2,14 @@
 //Gameboard object should be an IIFE
 //Player objects should be a factory
 //Displaycontroller object should be an IIFE
-//
+//GameLoop should be an IIFE
 
 
 
-
+//This should be moved somewhere better
 function fill(element) {
     element.target.innerText = human.getMarker();
-    console.log(element.target.id);
+    //console.log(element.target.id);
 }
 
 const DisplayController = (() => {
@@ -19,8 +19,10 @@ const DisplayController = (() => {
     const addHandlers = () => {
         tiles.forEach(element => {
             element.addEventListener('click', (e) => {
+                //I should probably make a game loop for the following calls...
                 fill(e);
-                Gameboard.play(e.target.id, true);
+                human.play(e.target.id, true);
+                //ai.play(ai.getMarker);
                 Gameboard.log();
             });
         });
@@ -29,7 +31,8 @@ const DisplayController = (() => {
             DisplayController.clear();
         });
         marker.addEventListener('click', (e) => {
-            human.setMarker(e);
+            human.setMarker(e.target.checked);
+            ai.setMarker(!e.target.checked);
             Gameboard.clear();
             DisplayController.clear();
         });
@@ -54,17 +57,10 @@ const Gameboard = (() => {
                 '0', '0', '0'];
 
     let round = 0;
-
-    const play = (tileID,human) => {
-        if(human){
-            data[tileID] = human.getMarker;
-            round++;
-        }
-        else{
-            data[tileID] = human.getAiMarker;
-            round++;
-        }
-        
+    const getData = () => data;
+    const setData = (tileID,marker) => {
+        data[tileID] = marker;
+        round++;
     };
     const clear = () => {
         data = ['0', '0', '0',
@@ -81,32 +77,47 @@ const Gameboard = (() => {
         });
     }
     return {
-        play,
+        setData,
         clear,
-        log
+        log,
+        getData
     }
 })();
 //TODO: rewrite this so you have one player is a human and the other is the AI
+//Maybe the AI should be its own object that inherits player factory?
 const Player = () => {
     let marker = 'X';
-    let aiMarker = 'O';
+    
     const setMarker = (bool) => {
-        if (bool.target.checked) {
+        if (bool) {
             marker = 'O';
-            aiMarker = 'X';
+            
         } else {
-            aiMarker = 'O';
             marker = 'X';
         }
     }
+    const play = (id,isHuman) => {
+        if(isHuman){
+            Gameboard.setData(id,human.getMarker());
+            
+            console.log(human.getMarker());
+        }
+        else{
+            data[tileID] = ai.getMarker();
+            
+        }
+        
+    }
     const getMarker = () => marker;
-    const getAiMarker = () => aiMarker;
+    
     return {
         setMarker,
         getMarker,
-        getAiMarker
+        play
+        
     }
 };
 
 const human = Player();
+const ai = Player();
 DisplayController.addHandlers();
