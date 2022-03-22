@@ -3,16 +3,30 @@
 //Player objects should be a factory
 //Displaycontroller object should be an IIFE
 //
-const restartBtn = document.getElementById('restart');
-const tiles = document.querySelectorAll('.tile');
-tiles.forEach(element => {
-    element.addEventListener('click', fill);
-});
+
+
+
 
 function fill(element) {
     element.target.innerHTML = 'X';
+    console.log(element.target.id);
 }
 
+const DisplayController = (() => {
+    const restartBtn = document.getElementById('restart');
+    const tiles = document.querySelectorAll('.tile');
+    const addHandlers = () => {
+        tiles.forEach(element => {
+            element.addEventListener('click', fill);
+        });
+        restartBtn.addEventListener('click', Gameboard.clear);
+    }
+
+    
+
+    return{addHandlers}
+
+})();
 
 const Gameboard = (() => {
     let data = [];
@@ -24,6 +38,7 @@ const Gameboard = (() => {
     const clear = () => {
         data = [];
         round = 0;
+        console.log('clear');
     }
     const log = () => {
         console.table(data);
@@ -39,3 +54,5 @@ const Gameboard = (() => {
 const Player = () => {
     const marker = 'X' //This should be X or O
 };
+
+DisplayController.addHandlers();
