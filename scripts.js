@@ -24,7 +24,11 @@ const DisplayController = (() => {
             Gameboard.clear();
             DisplayController.clear();
         });
-        marker.addEventListener('click', human.setMarker);
+        marker.addEventListener('click', (e) => {
+            human.setMarker(e);
+            Gameboard.clear();
+            DisplayController.clear();
+        });
     }
     const clear = () => {
         console.log(marker.checked);
