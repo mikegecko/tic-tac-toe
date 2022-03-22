@@ -18,7 +18,11 @@ const DisplayController = (() => {
     const marker = document.querySelector('.marker');
     const addHandlers = () => {
         tiles.forEach(element => {
-            element.addEventListener('click', fill);
+            element.addEventListener('click', (e) => {
+                fill(e);
+                Gameboard.play(e.target.id);
+                Gameboard.log();
+            });
         });
         restartBtn.addEventListener('click', () => {
             Gameboard.clear();
@@ -45,14 +49,21 @@ const DisplayController = (() => {
 })();
 
 const Gameboard = (() => {
-    let data = [];
+    let data = [0, 0, 0,
+                0, 0, 0,
+                0, 0, 0];
+
     let round = 0;
-    //Maybe this should just be the button ID instead of row/column
-    const play = (row, column, playerMarker) => {
+
+    const play = (tileID) => {
+        data[tileID] = 1;
         round++;
     };
     const clear = () => {
-        data = [];
+        data = [0, 0, 0,
+                0, 0, 0,
+                0, 0, 0];
+
         round = 0;
         console.log('clear');
     }
