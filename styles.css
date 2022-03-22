@@ -12,29 +12,35 @@ header {
     font-size: 48px;
     margin: 0;
 }
-.controls{
+
+.controls {
     width: 100%;
 }
-.controls{
+
+.controls {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
 }
-.controls>div{
+
+.controls>div {
     display: flex;
     justify-content: center;
     align-items: center;
     padding-right: 2rem;
 }
+
 .controls>button {
     width: 5rem;
 }
-.controls>div>p{
+
+.controls>div>p {
     font-size: 24px;
     font-weight: bold;
     padding: 4px;
 }
+
 .container {
     display: flex;
     align-items: center;

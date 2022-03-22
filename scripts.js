@@ -6,11 +6,12 @@
 
 
 
-//This should be moved somewhere better
+//This should be moved somewhere better/rewritten
 function fill(element) {
     element.target.innerText = human.getMarker();
     //console.log(element.target.id);
 }
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -22,10 +23,10 @@ const DisplayController = (() => {
     const addHandlers = () => {
         tiles.forEach(element => {
             element.addEventListener('click', (e) => {
-                //I should probably make a game loop for the following calls...
+                //TODO: Move the following code into a gameloop object
                 fill(e);
                 human.play(e.target.id, true);
-                ai.play(ai.aiSelect(),false);
+                ai.play(ai.aiSelect(), false);
                 Gameboard.log();
             });
         });
@@ -114,7 +115,7 @@ const Player = (mark) => {
     const aiSelect = () => {
         oldData = Gameboard.getData();
         //Analyze board state and maximize/minimize for best move
-        return(getRandomInt(0,8));
+        return (getRandomInt(0, 8));
     }
     return {
         setMarker,
