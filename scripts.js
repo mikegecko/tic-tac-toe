@@ -11,6 +11,9 @@ function fill(element) {
     element.target.innerText = human.getMarker();
     //console.log(element.target.id);
 }
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 const DisplayController = (() => {
     const restartBtn = document.getElementById('restart');
@@ -22,7 +25,7 @@ const DisplayController = (() => {
                 //I should probably make a game loop for the following calls...
                 fill(e);
                 human.play(e.target.id, true);
-                //ai.play(ai.getMarker);
+                ai.play(ai.aiSelect(),false);
                 Gameboard.log();
             });
         });
@@ -53,19 +56,21 @@ const DisplayController = (() => {
 
 const Gameboard = (() => {
     let data = ['0', '0', '0',
-                '0', '0', '0',
-                '0', '0', '0'];
+        '0', '0', '0',
+        '0', '0', '0'
+    ];
 
     let round = 0;
     const getData = () => data;
-    const setData = (tileID,marker) => {
+    const setData = (tileID, marker) => {
         data[tileID] = marker;
         round++;
     };
     const clear = () => {
         data = ['0', '0', '0',
-                '0', '0', '0',
-                '0', '0', '0'];
+            '0', '0', '0',
+            '0', '0', '0'
+        ];
 
         round = 0;
         console.log('clear');
@@ -83,41 +88,43 @@ const Gameboard = (() => {
         getData
     }
 })();
-//TODO: rewrite this so you have one player is a human and the other is the AI
+//TODO: 
 //Maybe the AI should be its own object that inherits player factory?
-const Player = () => {
-    let marker = 'X';
-    
+const Player = (mark) => {
+    let marker = mark;
+
     const setMarker = (bool) => {
         if (bool) {
             marker = 'O';
-            
+
         } else {
             marker = 'X';
         }
     }
-    const play = (id,isHuman) => {
-        if(isHuman){
-            Gameboard.setData(id,human.getMarker());
-            
+    const play = (id, isHuman) => {
+        if (isHuman) {
+            Gameboard.setData(id, human.getMarker());
             console.log(human.getMarker());
+        } else {
+            Gameboard.setData(id, ai.getMarker());
         }
-        else{
-            data[tileID] = ai.getMarker();
-            
-        }
-        
+
     }
     const getMarker = () => marker;
-    
+    const aiSelect = () => {
+        oldData = Gameboard.getData();
+        //Analyze board state and maximize/minimize for best move
+        return(getRandomInt(0,8));
+    }
     return {
         setMarker,
         getMarker,
-        play
-        
+        play,
+        aiSelect
+
     }
 };
 
-const human = Player();
-const ai = Player();
+const human = Player('X');
+const ai = Player('O');
 DisplayController.addHandlers();
