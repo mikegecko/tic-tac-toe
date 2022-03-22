@@ -19,12 +19,19 @@ const DisplayController = (() => {
         tiles.forEach(element => {
             element.addEventListener('click', fill);
         });
-        restartBtn.addEventListener('click', Gameboard.clear);
+        restartBtn.addEventListener('click', () => {
+            Gameboard.clear();
+            DisplayController.clear();
+        });
     }
-
+    const clear = () => {
+        tiles.forEach(tile => {
+            tile.innerHTML = null;
+        });
+    }
     
 
-    return{addHandlers}
+    return{addHandlers, clear}
 
 })();
 
