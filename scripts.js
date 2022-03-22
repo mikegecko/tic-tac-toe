@@ -8,13 +8,14 @@
 
 
 function fill(element) {
-    element.target.innerHTML = 'X';
+    element.target.innerText = human.getMarker();
     console.log(element.target.id);
 }
 
 const DisplayController = (() => {
     const restartBtn = document.getElementById('restart');
     const tiles = document.querySelectorAll('.tile');
+    const marker = document.querySelector('.marker');
     const addHandlers = () => {
         tiles.forEach(element => {
             element.addEventListener('click', fill);
@@ -23,15 +24,19 @@ const DisplayController = (() => {
             Gameboard.clear();
             DisplayController.clear();
         });
+        marker.addEventListener('click', human.setMarker);
     }
     const clear = () => {
+        console.log(marker.checked);
         tiles.forEach(tile => {
             tile.innerHTML = null;
         });
     }
-    
 
-    return{addHandlers, clear}
+    return {
+        addHandlers,
+        clear
+    }
 
 })();
 
@@ -49,7 +54,9 @@ const Gameboard = (() => {
     }
     const log = () => {
         console.table(data);
-        console.log('Round:' + round);
+        console.log({
+            round
+        });
     }
     return {
         play,
@@ -59,7 +66,21 @@ const Gameboard = (() => {
 })();
 
 const Player = () => {
-    const marker = 'X' //This should be X or O
+    let marker = 'X';
+    const setMarker = (bool) => {
+        if (bool.target.checked) {
+            marker = 'O'
+        } else {
+            marker = 'X';
+        }
+    }
+    const getMarker = () => marker;
+
+    return {
+        setMarker,
+        getMarker
+    }
 };
 
+const human = Player();
 DisplayController.addHandlers();
