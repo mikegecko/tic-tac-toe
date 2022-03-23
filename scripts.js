@@ -20,8 +20,7 @@ const DisplayController = (() => {
         tiles.forEach(element => {
             element.addEventListener('click', (e) => {
                 //TODO: Move the following code into a gameloop object
-                //Rewrite so it changes data - then read from data and update display
-
+                //TODO: Fix issue where player selects invalid move but computer still plays round
                 human.play(e.target.id, true);
                 ai.play(ai.aiSelect(), false);
                 Gameboard.log();
@@ -72,6 +71,17 @@ const Gameboard = (() => {
         data[tileID] = marker;
         round++;
     };
+    const isValid = (id) => {
+        if (id >= 0 && id <= 8) {
+            if (data[id] != null) {
+                return (false);
+            } else {
+                return (true);
+            }
+        } else {
+            return (false);
+        }
+    }
     const clear = () => {
         data = [null, null, null,
             null, null, null,
@@ -91,7 +101,8 @@ const Gameboard = (() => {
         setData,
         clear,
         log,
-        getData
+        getData,
+        isValid
     }
 })();
 //TODO: 
@@ -107,22 +118,10 @@ const Player = (mark) => {
             marker = 'X';
         }
     }
-    const isValid = (id) => {
-        let data = Gameboard.getData();
-        if (id >= 0 && id <= 8) {
-            if (data[id] != null) {
-                return (false);
-            } else {
-                return (true);
-            }
-        }
-        else{
-            return(false);
-        }
-    }
+
     const play = (id, isHuman) => {
-        //TODO: check if the location is a valid move
-        if (isValid(id)) {
+        //TODO: Fix issue where computer still plays round if player selects invalid move
+        if (Gameboard.isValid(id)) {
             if (isHuman) {
                 Gameboard.setData(id, human.getMarker());
                 console.log(human.getMarker());
@@ -135,15 +134,19 @@ const Player = (mark) => {
 
     }
     const getMarker = () => marker;
-    //Analyze board state and maximize/minimize for best move
-    //Check if location is a valid move
     const aiSelect = () => {
         let data = Gameboard.getData();
         let id = getRandomInt(0, 8);
-        while(!isValid(id)){
+        while (!Gameboard.isValid(id)) {
             id = getRandomInt(0, 8);
         }
-        return(id);
+        return (id);
+    }
+    const aiSelectSmart = () => {
+        //Analyze board state and maximize/minimize for best move
+        //Check if location is a valid move
+        let data = Gameboard.getData();
+        let id = 0;
     }
     return {
         setMarker,
