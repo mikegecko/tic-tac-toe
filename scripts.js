@@ -6,11 +6,7 @@
 
 
 
-//This should be moved somewhere better/rewritten
-function fill(element) {
-    element.target.innerText = human.getMarker();
-    //console.log(element.target.id);
-}
+
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -25,7 +21,7 @@ const DisplayController = (() => {
             element.addEventListener('click', (e) => {
                 //TODO: Move the following code into a gameloop object
                 //Rewrite so it changes data - then read from data and update display
-                //fill(e);
+                
                 human.play(e.target.id, true);
                 ai.play(ai.aiSelect(), false);
                 Gameboard.log();
