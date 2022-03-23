@@ -44,7 +44,7 @@ header {
 .container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 70vh;
     width: 100vw;
     flex-direction: column;

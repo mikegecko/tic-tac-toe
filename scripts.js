@@ -24,10 +24,13 @@ const DisplayController = (() => {
         tiles.forEach(element => {
             element.addEventListener('click', (e) => {
                 //TODO: Move the following code into a gameloop object
-                fill(e);
+                //Rewrite so it changes data - then read from data and update display
+                //fill(e);
                 human.play(e.target.id, true);
                 ai.play(ai.aiSelect(), false);
                 Gameboard.log();
+                update();
+                
             });
         });
         restartBtn.addEventListener('click', () => {
@@ -40,6 +43,12 @@ const DisplayController = (() => {
             Gameboard.clear();
             DisplayController.clear();
         });
+    }
+    const update = () => {
+        gameData = Gameboard.getData();
+        for (let index = 0; index < tiles.length; index++) {
+            tiles[index].innerText = gameData[index];
+        }
     }
     const clear = () => {
         console.log(marker.checked);
@@ -56,9 +65,9 @@ const DisplayController = (() => {
 })();
 
 const Gameboard = (() => {
-    let data = ['0', '0', '0',
-        '0', '0', '0',
-        '0', '0', '0'
+    let data = [null, null, null,
+        null, null, null,
+        null, null, null
     ];
 
     let round = 0;
@@ -68,9 +77,9 @@ const Gameboard = (() => {
         round++;
     };
     const clear = () => {
-        data = ['0', '0', '0',
-            '0', '0', '0',
-            '0', '0', '0'
+        data = [null, null, null,
+            null, null, null,
+            null, null, null
         ];
 
         round = 0;
