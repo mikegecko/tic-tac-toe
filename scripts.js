@@ -147,6 +147,7 @@ const Player = (mark) => {
         //Check if location is a valid move
         let data = Gameboard.getData();
         let id = 0;
+        return (id);
     }
     return {
         setMarker,
