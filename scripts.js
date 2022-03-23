@@ -108,6 +108,7 @@ const Player = (mark) => {
         }
     }
     const play = (id, isHuman) => {
+        //TODO: check if the location is a valid move
         if (isHuman) {
             Gameboard.setData(id, human.getMarker());
             console.log(human.getMarker());
@@ -120,6 +121,7 @@ const Player = (mark) => {
     const aiSelect = () => {
         oldData = Gameboard.getData();
         //Analyze board state and maximize/minimize for best move
+        //Check if location is a valid move
         return (getRandomInt(0, 8));
     }
     return {
