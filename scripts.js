@@ -109,10 +109,15 @@ const Player = (mark) => {
     }
     const isValid = (id) => {
         let data = Gameboard.getData();
-        if (data[id] != null) {
-            return (false);
-        } else {
-            return (true);
+        if (id >= 0 && id <= 8) {
+            if (data[id] != null) {
+                return (false);
+            } else {
+                return (true);
+            }
+        }
+        else{
+            return(false);
         }
     }
     const play = (id, isHuman) => {
@@ -135,14 +140,10 @@ const Player = (mark) => {
     const aiSelect = () => {
         let data = Gameboard.getData();
         let id = getRandomInt(0, 8);
-        if (isValid(id)){
-            return(id);
+        while(!isValid(id)){
+            id = getRandomInt(0, 8);
         }
-        else{
-            console.log('Ai play invalid');
-            aiSelect();//Results in endless loop when board is full
-            
-        }
+        return(id);
     }
     return {
         setMarker,
