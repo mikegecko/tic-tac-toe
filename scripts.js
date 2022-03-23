@@ -21,12 +21,12 @@ const DisplayController = (() => {
             element.addEventListener('click', (e) => {
                 //TODO: Move the following code into a gameloop object
                 //Rewrite so it changes data - then read from data and update display
-                
+
                 human.play(e.target.id, true);
                 ai.play(ai.aiSelect(), false);
                 Gameboard.log();
                 update();
-                
+
             });
         });
         restartBtn.addEventListener('click', () => {
@@ -49,7 +49,7 @@ const DisplayController = (() => {
     const clear = () => {
         console.log(marker.checked);
         tiles.forEach(tile => {
-            tile.innerHTML = null;
+            tile.innerText = null;
         });
     }
 
@@ -107,22 +107,42 @@ const Player = (mark) => {
             marker = 'X';
         }
     }
+    const isValid = (id) => {
+        let data = Gameboard.getData();
+        if (data[id] != null) {
+            return (false);
+        } else {
+            return (true);
+        }
+    }
     const play = (id, isHuman) => {
         //TODO: check if the location is a valid move
-        if (isHuman) {
-            Gameboard.setData(id, human.getMarker());
-            console.log(human.getMarker());
+        if (isValid(id)) {
+            if (isHuman) {
+                Gameboard.setData(id, human.getMarker());
+                console.log(human.getMarker());
+            } else {
+                Gameboard.setData(id, ai.getMarker());
+            }
         } else {
-            Gameboard.setData(id, ai.getMarker());
+            console.log('Not a valid move');
         }
 
     }
     const getMarker = () => marker;
+    //Analyze board state and maximize/minimize for best move
+    //Check if location is a valid move
     const aiSelect = () => {
-        oldData = Gameboard.getData();
-        //Analyze board state and maximize/minimize for best move
-        //Check if location is a valid move
-        return (getRandomInt(0, 8));
+        let data = Gameboard.getData();
+        let id = getRandomInt(0, 8);
+        if (isValid(id)){
+            return(id);
+        }
+        else{
+            console.log('Ai play invalid');
+            aiSelect();//Results in endless loop when board is full
+            
+        }
     }
     return {
         setMarker,
