@@ -66,6 +66,7 @@ const Gameboard = (() => {
     const setData = (tileID, marker) => {
         data[tileID] = marker;
     };
+    //TODO: specify winner by checking player marker | Add display winner/loser/draw functions to displayController
     const checkWin = () => {
         let newdata = getData();
         let rows = [newdata[0] + newdata[1] + newdata[2], newdata[3] + newdata[4] + newdata[5], newdata[6] + newdata[7] + newdata[8]];
