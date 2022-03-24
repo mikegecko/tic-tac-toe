@@ -19,12 +19,7 @@ const DisplayController = (() => {
     const addHandlers = () => {
         tiles.forEach(element => {
             element.addEventListener('click', (e) => {
-                //TODO: Move the following code into a gameloop object
-                //TODO: Fix issue where player selects invalid move but computer still plays round
-                human.play(e.target.id, true);
-                ai.play(ai.aiSelect(), false);
-                Gameboard.log();
-                update();
+                Gameboard.playRound(e);
 
             });
         });
@@ -54,7 +49,8 @@ const DisplayController = (() => {
 
     return {
         addHandlers,
-        clear
+        clear,
+        update
     }
 
 })();
@@ -71,6 +67,15 @@ const Gameboard = (() => {
         data[tileID] = marker;
         round++;
     };
+    const playRound = (playerEvent) => {
+        //TODO: Fix issue where player selects invalid move but computer still plays round
+        human.play(playerEvent.target.id, true);
+        //check for win between here - maybe add delay or transition styling - update display
+        ai.play(ai.aiSelect(), false);
+        //check for ai win - update display
+        log();
+        DisplayController.update();
+    }
     const isValid = (id) => {
         if (id >= 0 && id <= 8) {
             if (data[id] != null) {
@@ -102,7 +107,8 @@ const Gameboard = (() => {
         clear,
         log,
         getData,
-        isValid
+        isValid,
+        playRound
     }
 })();
 //TODO: 
