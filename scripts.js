@@ -65,16 +65,46 @@ const Gameboard = (() => {
     const getData = () => data;
     const setData = (tileID, marker) => {
         data[tileID] = marker;
-        round++;
     };
+    const checkWin = () => {
+        let newdata = getData();
+        let rows = [newdata[0] + newdata[1] + newdata[2], newdata[3] + newdata[4] + newdata[5], newdata[6] + newdata[7] + newdata[8]];
+        let columns = [newdata[0] + newdata[3] + newdata[6], newdata[1] + newdata[4] + newdata[7], newdata[2] + newdata[5] + newdata[8]];
+        let diags = [newdata[0] + newdata[4] + newdata[8], newdata[2] + newdata[4] + newdata[6]];
+        if (round > 2) {
+            console.log('checked');
+            rows.forEach(element => {
+                if (element === 'XXX' || element === 'OOO') {
+                    console.log('Winner!');
+                    return (true);
+                }
+            });
+            columns.forEach(element => {
+                if (element === 'XXX' || element === 'OOO') {
+                    console.log('Winner!');
+                    return (true);
+                }
+            });
+            diags.forEach(element => {
+                if (element === 'XXX' || element === 'OOO') {
+                    console.log('Winner!');
+                    return (true);
+                }
+            });
+        }
+    }
     const playRound = (playerEvent) => {
+        round++;
         //TODO: Fix issue where player selects invalid move but computer still plays round
         human.play(playerEvent.target.id, true);
+        checkWin();
         //check for win between here - maybe add delay or transition styling - update display
         ai.play(ai.aiSelect(), false);
         //check for ai win - update display
-        log();
+
         DisplayController.update();
+
+        log();
     }
     const isValid = (id) => {
         if (id >= 0 && id <= 8) {
@@ -102,6 +132,7 @@ const Gameboard = (() => {
             round
         });
     }
+
     return {
         setData,
         clear,
@@ -130,7 +161,6 @@ const Player = (mark) => {
         if (Gameboard.isValid(id)) {
             if (isHuman) {
                 Gameboard.setData(id, human.getMarker());
-                console.log(human.getMarker());
             } else {
                 Gameboard.setData(id, ai.getMarker());
             }
