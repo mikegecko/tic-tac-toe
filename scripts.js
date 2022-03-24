@@ -100,6 +100,7 @@ const Gameboard = (() => {
         human.play(playerEvent.target.id, true);
         checkWin();
         //check for win between here - maybe add delay or transition styling - update display
+        //if-checkWin()-true-displayController.displayWinner()?
         ai.play(ai.aiSelect(), false);
         //check for ai win - update display
 
