@@ -72,32 +72,53 @@ const Gameboard = (() => {
         if (round > 2) {
             console.log('checked');
             rows.forEach(element => {
-                if (element === 'XXX' || element === 'OOO') {
-                    console.log('Winner!');
+                if (element === 'XXX') {
+                    console.log('X is Winner!');
+                    return (true);
+                }
+                if (element === 'OOO') {
+                    console.log('O is Winner!');
                     return (true);
                 }
             });
             columns.forEach(element => {
-                if (element === 'XXX' || element === 'OOO') {
-                    console.log('Winner!');
+                if (element === 'XXX') {
+                    console.log('X is Winner!');
+                    return (true);
+                }
+                if (element === 'OOO') {
+                    console.log('O is Winner!');
                     return (true);
                 }
             });
             diags.forEach(element => {
-                if (element === 'XXX' || element === 'OOO') {
-                    console.log('Winner!');
+                if (element === 'XXX') {
+                    console.log('X is Winner!');
+                    return (true);
+                }
+                if (element === 'OOO') {
+                    console.log('O is Winner!');
                     return (true);
                 }
             });
         }
     }
     const playRound = (playerEvent) => {
-        //TODO: Fix issue where player selects invalid move but computer still plays round
-        if(isValid(playerEvent.target.id)){
+
+        if (isValid(playerEvent.target.id)) {
             round++;
-            human.play(playerEvent.target.id, true);
-            ai.play(ai.aiSelect(), false);
+            if (round < 5) {
+                human.play(playerEvent.target.id, true);
+                ai.play(ai.aiSelect(), false);
+            }
+            else{
+                human.play(playerEvent.target.id, true);
+                //Display proper end screen
+            }
         }
+
+
+
 
         //check for win between here - maybe add delay or transition styling - update display
         //if-checkWin()-true-displayController.displayWinner()?
