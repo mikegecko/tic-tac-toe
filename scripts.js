@@ -1,10 +1,5 @@
 // TODO: Make a sidebar that displays game history
 
-
-
-
-
-
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -17,7 +12,6 @@ const DisplayController = (() => {
         tiles.forEach(element => {
             element.addEventListener('click', (e) => {
                 Gameboard.playRound(e);
-
             });
         });
         restartBtn.addEventListener('click', () => {
@@ -43,11 +37,15 @@ const DisplayController = (() => {
             tile.innerText = null;
         });
     }
-
+    const displayRoundEnd = (string) => {
+        //string should be 'win' 'loss' 'draw'
+        console.log(string);
+    }
     return {
         addHandlers,
         clear,
-        update
+        update,
+        displayRoundEnd
     }
 
 })();
@@ -64,43 +62,40 @@ const Gameboard = (() => {
         data[tileID] = marker;
     };
     //TODO: specify winner by checking player marker | Add display winner/loser/draw functions to displayController
-    const checkWin = () => {
+    const checkWin = (usermarker) => {
+        let usercheckstring = usermarker + usermarker + usermarker;
         let newdata = getData();
         let rows = [newdata[0] + newdata[1] + newdata[2], newdata[3] + newdata[4] + newdata[5], newdata[6] + newdata[7] + newdata[8]];
         let columns = [newdata[0] + newdata[3] + newdata[6], newdata[1] + newdata[4] + newdata[7], newdata[2] + newdata[5] + newdata[8]];
         let diags = [newdata[0] + newdata[4] + newdata[8], newdata[2] + newdata[4] + newdata[6]];
+
         if (round > 2) {
-            console.log('checked');
             rows.forEach(element => {
-                if (element === 'XXX') {
-                    console.log('X is Winner!');
+                if (element === usercheckstring) {
+                    console.log(usermarker + ' is Winner!');
                     return (true);
-                }
-                if (element === 'OOO') {
-                    console.log('O is Winner!');
-                    return (true);
+                } else {
+                    return (false);
                 }
             });
             columns.forEach(element => {
-                if (element === 'XXX') {
-                    console.log('X is Winner!');
+                if (element === usercheckstring) {
+                    console.log(usermarker + ' is Winner!');
                     return (true);
-                }
-                if (element === 'OOO') {
-                    console.log('O is Winner!');
-                    return (true);
+                } else {
+                    return (false);
                 }
             });
             diags.forEach(element => {
-                if (element === 'XXX') {
-                    console.log('X is Winner!');
+                if (element === usercheckstring) {
+                    console.log(usermarker + ' is Winner!');
                     return (true);
-                }
-                if (element === 'OOO') {
-                    console.log('O is Winner!');
-                    return (true);
+                } else {
+                    return (false);
                 }
             });
+        } else {
+            return (false);
         }
     }
     const playRound = (playerEvent) => {
@@ -109,21 +104,28 @@ const Gameboard = (() => {
             round++;
             if (round < 5) {
                 human.play(playerEvent.target.id, true);
+                if (checkWin(human.getMarker())) {
+                    //Display win
+                }
                 ai.play(ai.aiSelect(), false);
-            }
-            else{
+                if (checkWin(ai.getMarker())) {
+                    //Display loss
+                }
+
+            } else {
                 human.play(playerEvent.target.id, true);
-                //Display proper end screen
+                if (!checkWin(human.getMarker()) && !checkWin(ai.getMarker())) {
+                    //Game has ended in a draw...
+                } else {
+                    //someone won on last move
+                }
             }
         }
 
-
-
-
         //check for win between here - maybe add delay or transition styling - update display
         //if-checkWin()-true-displayController.displayWinner()?
+        //add checks for draw, loss is just a computer win
         //check for ai win - update display
-        checkWin();
         DisplayController.update();
         log();
     }
@@ -178,7 +180,6 @@ const Player = (mark) => {
     }
 
     const play = (id, isHuman) => {
-        //TODO: Fix issue where computer still plays round if player selects invalid move
         if (Gameboard.isValid(id)) {
             if (isHuman) {
                 Gameboard.setData(id, human.getMarker());
