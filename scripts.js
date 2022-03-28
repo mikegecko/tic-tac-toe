@@ -8,6 +8,8 @@ const DisplayController = (() => {
     const restartBtn = document.getElementById('restart');
     const tiles = document.querySelectorAll('.tile');
     const marker = document.querySelector('.marker');
+    const container = document.querySelector('.container');
+    const overlay = document.querySelector('.overlay');
     const addHandlers = () => {
         tiles.forEach(element => {
             element.addEventListener('click', (e) => {
@@ -32,6 +34,7 @@ const DisplayController = (() => {
         }
     }
     const clear = () => {
+        overlay.classList.add("hide");
         tiles.forEach(tile => {
             tile.innerText = null;
         });
@@ -39,13 +42,19 @@ const DisplayController = (() => {
     const displayRoundEnd = (string) => {
         switch (string) {
             case 'win':
-
+                overlay.classList.remove("hide");
+                overlay.innerText = 'You Won!'
+                container.style.filter = "blur(4px)"
                 break;
             case 'loss':
-
+                overlay.classList.remove("hide");
+                overlay.innerText = 'You Lose!'
+                container.style.filter = "blur(4px)"
                 break;
             case 'draw':
-                
+                overlay.classList.remove("hide");
+                overlay.innerText = 'Draw!'
+                container.style.filter = "blur(4px)"
                 break;
             default:
                 console.log('An error occurred...');
