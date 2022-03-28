@@ -37,8 +37,22 @@ const DisplayController = (() => {
         });
     }
     const displayRoundEnd = (string) => {
-        //string should be 'win' 'loss' 'draw'
-        console.log(string);
+        switch (string) {
+            case 'win':
+
+                break;
+            case 'loss':
+
+                break;
+            case 'draw':
+                
+                break;
+            default:
+                console.log('An error occurred...');
+                break;
+        }
+
+
     }
     return {
         addHandlers,
@@ -93,7 +107,7 @@ const Gameboard = (() => {
         } else {
             return (false);
         }
-        return(result);
+        return (result);
     }
     const playRound = (playerEvent) => {
 
@@ -115,7 +129,7 @@ const Gameboard = (() => {
                 if (!checkWin(human.getMarker()) && !checkWin(ai.getMarker())) {
                     DisplayController.displayRoundEnd('draw');
                 } else {
-                    console.log('Someone won on last move');
+                    DisplayController.displayRoundEnd('win');
                 }
             }
         }
