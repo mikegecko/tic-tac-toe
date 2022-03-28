@@ -1,8 +1,5 @@
 // TODO: Make a sidebar that displays game history
-//Gameboard object should be an IIFE
-//Player objects should be a factory
-//Displaycontroller object should be an IIFE
-//GameLoop should be an IIFE
+
 
 
 
@@ -95,17 +92,18 @@ const Gameboard = (() => {
         }
     }
     const playRound = (playerEvent) => {
-        round++;
         //TODO: Fix issue where player selects invalid move but computer still plays round
-        human.play(playerEvent.target.id, true);
-        checkWin();
+        if(isValid(playerEvent.target.id)){
+            round++;
+            human.play(playerEvent.target.id, true);
+            ai.play(ai.aiSelect(), false);
+        }
+
         //check for win between here - maybe add delay or transition styling - update display
         //if-checkWin()-true-displayController.displayWinner()?
-        ai.play(ai.aiSelect(), false);
         //check for ai win - update display
-
+        checkWin();
         DisplayController.update();
-
         log();
     }
     const isValid = (id) => {
