@@ -10,8 +10,14 @@ const DisplayController = (() => {
     const marker = document.querySelector('.marker');
     const container = document.querySelector('.container');
     const overlay = document.querySelector('.overlay');
+    const difficulty = document.querySelector('#difficulty');
     const addHandlers = () => {
         overlay.addEventListener('click', () => {
+            Gameboard.clear();
+            DisplayController.clear();
+        });
+        difficulty.addEventListener('change', (e) =>{
+            Gameboard.setDifficulty(e);
             Gameboard.clear();
             DisplayController.clear();
         });
@@ -78,16 +84,22 @@ const DisplayController = (() => {
 })();
 
 const Gameboard = (() => {
+    
     let data = [null, null, null,
         null, null, null,
         null, null, null
     ];
-
+    let difficulty = 'easy';
     let round = 0;
     const getData = () => data;
     const setData = (tileID, marker) => {
         data[tileID] = marker;
     };
+    const setDifficulty = (event) => {
+        difficulty = event.target.value;
+    }
+    const getDifficulty = () => difficulty;
+
     const checkWin = (usermarker) => {
         let usercheckstring = usermarker + usermarker + usermarker;
         let newdata = getData();
@@ -137,7 +149,13 @@ const Gameboard = (() => {
                     stopround = true;
                 }
                 if (!stopround) {
-                    ai.play(ai.aiSelectSmart(), false);
+                    console.log(difficulty);
+                    if(difficulty == 'impossible'){
+                        ai.play(ai.aiSelectSmart(), false);
+                    }
+                    else{
+                        ai.play(ai.aiSelect(), false);
+                    }
                 }
                 if (checkWin(ai.getMarker())) {
                     DisplayController.displayRoundEnd('loss');
@@ -188,13 +206,15 @@ const Gameboard = (() => {
         log,
         getData,
         isValid,
-        playRound
+        playRound,
+        getDifficulty,
+        setDifficulty
     }
 })();
 
 const Player = (mark) => {
     let marker = mark;
-
+    
     const setMarker = (bool) => {
         if (bool) {
             marker = 'O';

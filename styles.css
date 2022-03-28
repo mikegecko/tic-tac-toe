@@ -39,12 +39,13 @@ header {
     opacity: 0;
     
 }
-.controls {
-    width: 100%;
+.diff{
+    gap: 10px;
 }
 
 .controls {
     display: flex;
+    width: 100%;
     justify-content: center;
     align-items: center;
     flex-direction: row;
