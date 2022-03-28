@@ -11,6 +11,10 @@ const DisplayController = (() => {
     const container = document.querySelector('.container');
     const overlay = document.querySelector('.overlay');
     const addHandlers = () => {
+        overlay.addEventListener('click', () => {
+            Gameboard.clear();
+            DisplayController.clear();
+        });
         tiles.forEach(element => {
             element.addEventListener('click', (e) => {
                 Gameboard.playRound(e);
@@ -35,6 +39,7 @@ const DisplayController = (() => {
     }
     const clear = () => {
         overlay.classList.add("hide");
+        container.style.filter = "blur(0px)"
         tiles.forEach(tile => {
             tile.innerText = null;
         });
