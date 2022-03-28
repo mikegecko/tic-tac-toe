@@ -123,9 +123,10 @@ const Gameboard = (() => {
         }
         return (result);
     }
-    
+
     const playRound = (playerEvent) => {
         let stopround = false;
+        let temp;
         if (isValid(playerEvent.target.id)) {
             round++;
             console.log(round);
@@ -135,8 +136,8 @@ const Gameboard = (() => {
                     DisplayController.displayRoundEnd('win');
                     stopround = true;
                 }
-                if(!stopround){
-                    ai.play(ai.aiSelect(), false);
+                if (!stopround) {
+                    ai.play(ai.aiSelectSmart(), false);
                 }
                 if (checkWin(ai.getMarker())) {
                     DisplayController.displayRoundEnd('loss');
@@ -190,8 +191,7 @@ const Gameboard = (() => {
         playRound
     }
 })();
-//TODO: 
-//Maybe the AI should be its own object that inherits player factory?
+
 const Player = (mark) => {
     let marker = mark;
 
@@ -225,18 +225,126 @@ const Player = (mark) => {
         }
         return (id);
     }
+    //basically checkWin() but returns +10 or -10
+    const evaluate = (board) => {
+        let playercheck = human.getMarker() + human.getMarker() + human.getMarker();
+        let computercheck = ai.getMarker() + ai.getMarker() + ai.getMarker();
+        let newdata = board;
+        let rows = [newdata[0] + newdata[1] + newdata[2], newdata[3] + newdata[4] + newdata[5], newdata[6] + newdata[7] + newdata[8]];
+        let columns = [newdata[0] + newdata[3] + newdata[6], newdata[1] + newdata[4] + newdata[7], newdata[2] + newdata[5] + newdata[8]];
+        let diags = [newdata[0] + newdata[4] + newdata[8], newdata[2] + newdata[4] + newdata[6]];
+        let result = 0;
+        for (let r = 0; r < rows.length; r++) {
+            if (rows[r] === playercheck) {
+                return (-10);
+            }
+            if (rows[r] === computercheck) {
+                return (+10);
+            }
+        }
+        for (let c = 0; c < columns.length; c++) {
+            if (columns[c] === playercheck) {
+                return (-10);
+            }
+            if (columns[c] === computercheck) {
+                return (+10);
+            }
+        }
+        for (let d = 0; d < diags.length; d++) {
+            if (diags[d] === playercheck) {
+                return (-10);
+            }
+            if (diags[d] === computercheck) {
+                return (+10);
+            }
+        }
+        return (0);
+    }
+    const minimax = (board, depth, isMaximizer) => {
+        //Assign weight to the current board state
+        let score = evaluate(board);
+        let openSpaces = 0;
+        board.forEach(element => {
+            if(element === null)
+                openSpaces++;
+        });
+        //if maximizer wins return score
+        if (score == 10)
+            return score;
+        if (score == -10)
+            return score;
+        if(openSpaces == 0){
+            return(0);
+        }
+
+        //Maximizer
+        if (isMaximizer) {
+            let best = -1000;
+
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] == null) {
+                    //Make a move
+                    board[i] = ai.getMarker();
+                    //Call minimax recursively to choose max value
+                    best = Math.max(best, minimax(board, depth + 1, !isMaximizer));
+                    //Undo move
+                    board[i] = null;
+                }
+
+            }
+            return best;
+        }
+        //Minimizer
+        else {
+            let best = 1000;
+
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] == null) {
+                    //Make a move
+                    board[i] = human.getMarker();
+                    //Call minimax recursively to choose max value
+                    best = Math.min(best, minimax(board, depth + 1, !isMaximizer));
+                    //Undo move
+                    board[i] = null;
+                }
+
+            }
+            return best;
+        }
+
+    }
     const aiSelectSmart = () => {
-        //Analyze board state and maximize/minimize for best move
-        //Check if location is a valid move
+        //Assign weights to different board states +10 for win -10 for loss 0 / nothing for an inconclusive round
+        //Play each possible open move and check its state - do this recursively(does this minimax play a 'player' move to see if its choice will give them a win?)
+        //???
+        //Profit
         let data = Gameboard.getData();
         let id = 0;
+
+        let bestValue = -1000;
+        for (let index = 0; index < data.length; index++) {
+            if (data[index] === null) {
+                //Make a move
+                data[index] = ai.getMarker();
+                //Compute value of this move
+                let moveValue = minimax(data, 0, false);
+                //Undo the move we just made
+                data[index] = null;
+                if (moveValue > bestValue) {
+                    bestValue = moveValue;
+                    id = index;
+                }
+            }
+
+        }
         return (id);
     }
     return {
         setMarker,
         getMarker,
         play,
-        aiSelect
+        aiSelect,
+        aiSelectSmart
 
     }
 };
