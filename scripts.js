@@ -48,17 +48,17 @@ const DisplayController = (() => {
         switch (string) {
             case 'win':
                 overlay.classList.remove("hide");
-                overlay.innerText = 'You Won!'
+                overlay.innerHTML = 'You Won! <p>Click anywhere to restart...</p>'
                 container.style.filter = "blur(4px)"
                 break;
             case 'loss':
                 overlay.classList.remove("hide");
-                overlay.innerText = 'You Lose!'
+                overlay.innerHTML = 'You Lose! <p>Click anywhere to restart...</p>'
                 container.style.filter = "blur(4px)"
                 break;
             case 'draw':
                 overlay.classList.remove("hide");
-                overlay.innerText = 'Draw!'
+                overlay.innerHTML = 'Draw! <p>Click anywhere to restart...</p>'
                 container.style.filter = "blur(4px)"
                 break;
             default:
