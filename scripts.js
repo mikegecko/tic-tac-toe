@@ -123,8 +123,9 @@ const Gameboard = (() => {
         }
         return (result);
     }
+    
     const playRound = (playerEvent) => {
-
+        let stopround = false;
         if (isValid(playerEvent.target.id)) {
             round++;
             console.log(round);
@@ -132,8 +133,11 @@ const Gameboard = (() => {
                 human.play(playerEvent.target.id, true);
                 if (checkWin(human.getMarker())) {
                     DisplayController.displayRoundEnd('win');
+                    stopround = true;
                 }
-                ai.play(ai.aiSelect(), false);
+                if(!stopround){
+                    ai.play(ai.aiSelect(), false);
+                }
                 if (checkWin(ai.getMarker())) {
                     DisplayController.displayRoundEnd('loss');
                 }
