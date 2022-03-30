@@ -3,13 +3,25 @@
     font-size: 18px;
     box-sizing: border-box;
 }
+
 @-webkit-keyframes fadeIn {
-    from { opacity: 0; }
-      to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
+
 @keyframes fadeIn {
-    from { opacity: 0; }
-      to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 header {
@@ -20,7 +32,8 @@ header {
     font-size: 48px;
     margin: 0;
 }
-.overlay{
+
+.overlay {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -34,12 +47,14 @@ header {
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s;
 }
-.hide{
+
+.hide {
     display: none;
     opacity: 0;
-    
+
 }
-.diff{
+
+.diff {
     gap: 10px;
 }
 

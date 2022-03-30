@@ -16,7 +16,7 @@ const DisplayController = (() => {
             Gameboard.clear();
             DisplayController.clear();
         });
-        difficulty.addEventListener('change', (e) =>{
+        difficulty.addEventListener('change', (e) => {
             Gameboard.setDifficulty(e);
             Gameboard.clear();
             DisplayController.clear();
@@ -84,7 +84,7 @@ const DisplayController = (() => {
 })();
 
 const Gameboard = (() => {
-    
+
     let data = [null, null, null,
         null, null, null,
         null, null, null
@@ -135,7 +135,7 @@ const Gameboard = (() => {
         }
         return (result);
     }
-
+    //Main Game loop
     const playRound = (playerEvent) => {
         let stopround = false;
         let temp;
@@ -150,10 +150,9 @@ const Gameboard = (() => {
                 }
                 if (!stopround) {
                     console.log(difficulty);
-                    if(difficulty == 'impossible'){
+                    if (difficulty == 'impossible') {
                         ai.play(ai.aiSelectSmart(), false);
-                    }
-                    else{
+                    } else {
                         ai.play(ai.aiSelect(), false);
                     }
                 }
@@ -214,7 +213,7 @@ const Gameboard = (() => {
 
 const Player = (mark) => {
     let marker = mark;
-    
+
     const setMarker = (bool) => {
         if (bool) {
             marker = 'O';
@@ -237,6 +236,7 @@ const Player = (mark) => {
 
     }
     const getMarker = () => marker;
+    //Dumb move select
     const aiSelect = () => {
         let data = Gameboard.getData();
         let id = getRandomInt(0, 8);
@@ -245,7 +245,7 @@ const Player = (mark) => {
         }
         return (id);
     }
-    //basically checkWin() but returns +10 or -10
+    //Checks for a win state and returns +10 or -10 depending on player/computer
     const evaluate = (board) => {
         let playercheck = human.getMarker() + human.getMarker() + human.getMarker();
         let computercheck = ai.getMarker() + ai.getMarker() + ai.getMarker();
@@ -285,16 +285,16 @@ const Player = (mark) => {
         let score = evaluate(board);
         let openSpaces = 0;
         board.forEach(element => {
-            if(element === null)
+            if (element === null)
                 openSpaces++;
         });
-        //if maximizer wins return score
+        //if maximizer or minimizer wins; return score
         if (score == 10)
             return score;
         if (score == -10)
             return score;
-        if(openSpaces == 0){
-            return(0);
+        if (openSpaces == 0) {
+            return (0);
         }
 
         //Maximizer
@@ -334,8 +334,8 @@ const Player = (mark) => {
 
     }
     const aiSelectSmart = () => {
-        //Assign weights to different board states +10 for win -10 for loss 0 / nothing for an inconclusive round
-        //Play each possible open move and check its state - do this recursively(does this minimax play a 'player' move to see if its choice will give them a win?)
+        //Assign weights to different board states +10 for win -10 for loss & 0 / nothing for an inconclusive round
+        //Play each possible open move and check its state - does this recursively
         //???
         //Profit
         let data = Gameboard.getData();
